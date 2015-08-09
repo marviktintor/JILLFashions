@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">JILL Fashions</string>
+    <string name="client_name">Client Name</string>
+    <string name="client_contacts">Contacts</string>
+    <string name="fabric_info">Fabric Info</string>
+    <string name="payment_info">Payment Info</string>
+    <string name="collection_info">Collection Info</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="email">Email</string>
+    <string name="phonenumber">Phonenumber</string>
+    <string name="material">Material</string>
+    <string name="color">Color</string>
+    <string name="cost">Cost</string>
+    <string name="discount">Discount</string>
+    <string name="paid">Paid Amount</string>
+    <string name="completed">Completed</string>
+    <string name="collected">Collected</string>
+    <string name="save_client_order">Save Client Order</string>
+    <string name="completion_info">Completion Info</string>
+</resources>
