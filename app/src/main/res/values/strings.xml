@@ -23,4 +23,5 @@
     <string name="and">and</string>
     <string name="completed_status">completed</string>
     <string name="collected_status">collected</string>
+    <string name="add_new_order">Add New Client Order</string>
 </resources>

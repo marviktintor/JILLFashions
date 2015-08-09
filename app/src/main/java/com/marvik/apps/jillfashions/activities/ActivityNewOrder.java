@@ -248,7 +248,7 @@ public class ActivityNewOrder extends ActivityWrapper implements CompoundButton.
             }
 
             transactionManager.commitNewOrder(sFirstname, sLastname, sEmail, sPhonenumber, sColor, sMaterial, sCost, sOrderDescription, sDiscount,
-                    sPaidAmount, completed, getCompletedDate(), collected, getCollectedDate(), getClientAvatarUri(), getFabricAvatarUri()
+                    sPaidAmount, completed, getCompletedDate(), collected, getCollectedDate(), getAvatarFile(getClientAvatarUri()), getAvatarFile(getFabricAvatarUri())
             );
 
             int rows = getContentResolver().query(ClientOrders.CONTENT_URI, null, null, null, null).getCount();
@@ -308,6 +308,15 @@ public class ActivityNewOrder extends ActivityWrapper implements CompoundButton.
         if (sPaidAmount.equals("")) {
             orderValid = false;
             etPaidAmount.setHintTextColor(Color.RED);
+        }
+
+        if (getFabricAvatarUri() == null) {
+            orderValid = false;
+            toast("Provide a fabric pic");
+        }
+        if (getClientAvatarUri() == null) {
+            orderValid = false;
+            toast("Provide a client pic");
         }
         return orderValid;
     }

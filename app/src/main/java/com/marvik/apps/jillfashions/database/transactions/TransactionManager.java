@@ -43,7 +43,7 @@ public class TransactionManager {
     public void commitNewOrder(String firstname, String lastname, String email,
                                String phonenumber, String color, String material, String orderDescription, String cost,
                                String discount, String paidAmount, int completed, long completedDate,
-                               int collected, long collectedDate, Uri clientAvatarUri, Uri fabricAvatarUri) {
+                               int collected, long collectedDate, String clientAvatarUri, String fabricAvatarUri) {
 
         ClientOrders clientOrders = new ClientOrders();
         ContentValues values = new ContentValues();

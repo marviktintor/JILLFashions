@@ -8,19 +8,26 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.marvik.apps.jillfashions.R;
+import com.marvik.apps.jillfashions.activities.ActivityNewOrder;
 import com.marvik.apps.jillfashions.database.transactions.TransactionManager;
+import com.marvik.apps.jillfashions.models.orders.OrdersInfo;
 import com.marvik.apps.jillfashions.views.adapters.OrdersAdapter;
+
+import java.util.List;
 
 /**
  * Created by victor on 7/29/2015.
  */
-public class FragmentClientOrders extends Fragment {
+public class FragmentClientOrders extends Fragment implements AdapterView.OnItemClickListener {
 
     ListView lvClientOrders;
     TransactionManager transactionManager;
+    private List<OrdersInfo> clientOrders;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -30,6 +37,7 @@ public class FragmentClientOrders extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         transactionManager = new TransactionManager(getActivity());
+        clientOrders = getTransactionManager().getOrdersAll();
     }
 
     @Nullable
@@ -86,12 +94,19 @@ public class FragmentClientOrders extends Fragment {
     }
 
     private void initViews(View view) {
-        lvClientOrders = (ListView)view.findViewById(R.id.activity_client_orders_listView_orders);
-        lvClientOrders.setAdapter(new OrdersAdapter(getActivity(),R.layout.list_client_orders,getTransactionManager().getOrdersAll()));
-
+        lvClientOrders = (ListView) view.findViewById(R.id.activity_client_orders_listView_orders);
+        lvClientOrders.setAdapter(new OrdersAdapter(getActivity(), R.layout.list_client_orders, clientOrders));
+        lvClientOrders.setOnItemClickListener(this);
     }
 
     public TransactionManager getTransactionManager() {
         return transactionManager;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position == clientOrders.size()) {
+            getActivity().startActivity(new Intent(getActivity(), ActivityNewOrder.class));
+        }
     }
 }

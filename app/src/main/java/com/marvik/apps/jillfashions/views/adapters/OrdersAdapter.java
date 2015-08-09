@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.marvik.apps.jillfashions.R;
@@ -29,7 +30,7 @@ public class OrdersAdapter extends BaseAdapter {
     private int layout;
     private Context context;
 
-    public OrdersAdapter( Context context,int layout, List<OrdersInfo> ordersInfos) {
+    public OrdersAdapter(Context context, int layout, List<OrdersInfo> ordersInfos) {
         this.ordersInfos = ordersInfos;
         this.layout = layout;
         this.context = context;
@@ -37,7 +38,7 @@ public class OrdersAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return getOrdersInfos().size();
+        return getOrdersInfos().size()+1;
     }
 
     @Override
@@ -56,20 +57,23 @@ public class OrdersAdapter extends BaseAdapter {
         View view = convertView;
         if (view == null) {
             LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = layoutInflater.inflate(getLayout(),parent,false);
-            holder = new Holder(view);
+            view = layoutInflater.inflate(getLayout(), parent, false);
+            holder = new Holder(view, position);
             view.setTag(holder);
         }
 
-        holder = (Holder)view.getTag();
-        holder.setClientName(getOrdersInfos().get(position).getClientName());
-        holder.setCollectedStatus(getOrdersInfos().get(position).getCollectedStatus());
-        holder.setCompletedStatus(getOrdersInfos().get(position).getCompletedStatus());
-        holder.setOrderDesc(getOrdersInfos().get(position).getOrderDescription());
-        try {
-            holder.setClientAvatar(getOrdersInfos().get(position).getClientAvatarUri());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (position < getOrdersInfos().size()) {
+            holder = (Holder) view.getTag();
+            holder.setClientName(getOrdersInfos().get(position).getClientName());
+            holder.setCollectedStatus(getOrdersInfos().get(position).getCollectedStatus());
+            holder.setCompletedStatus(getOrdersInfos().get(position).getCompletedStatus());
+            holder.setOrderDesc(getOrdersInfos().get(position).getOrderDescription());
+            try {
+                holder.setClientAvatar(getOrdersInfos().get(position).getClientAvatarUri());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
         return view;
     }
@@ -89,15 +93,28 @@ public class OrdersAdapter extends BaseAdapter {
 
     class Holder {
 
-        private TextView clientName, orderDesc, completedStatus, collectedStatus;
-        private ImageView clientAvatar;
 
-        Holder(View view) {
+        private TextView clientName, orderDesc, completedStatus, collectedStatus, addNewOrder;
+        private ImageView clientAvatar;
+        private LinearLayout llOrderIfos;
+
+        Holder(View view, int position) {
             clientAvatar = (ImageView) view.findViewById(R.id.list_client_orders_imageView_client_avatar);
             clientName = (TextView) view.findViewById(R.id.list_client_orders_textView_client_name);
             orderDesc = (TextView) view.findViewById(R.id.list_client_orders_textView_order_desc);
             completedStatus = (TextView) view.findViewById(R.id.list_client_orders_textView_completed_status);
             collectedStatus = (TextView) view.findViewById(R.id.list_client_orders_textView_collected_status);
+            addNewOrder = (TextView) view.findViewById(R.id.list_client_orders_textView_add_new);
+
+            llOrderIfos = (LinearLayout) view.findViewById(R.id.list_client_orders_linearLayout_order_infos);
+
+            if (position == getOrdersInfos().size()) {
+                addNewOrder.setVisibility(TextView.VISIBLE);
+                llOrderIfos.setVisibility(LinearLayout.GONE);
+            } else {
+                addNewOrder.setVisibility(TextView.GONE);
+                llOrderIfos.setVisibility(LinearLayout.VISIBLE);
+            }
         }
 
         public void setClientAvatar(String avatorUri) throws IOException {
@@ -106,8 +123,8 @@ public class OrdersAdapter extends BaseAdapter {
                 FileInputStream fis = new FileInputStream(file);
                 Bitmap bitmap = BitmapFactory.decodeStream(fis);
                 clientAvatar.setImageBitmap(bitmap);
-            }else{
-                Log.d("FILE_NOT_EXISTS",file.getName());
+            } else {
+                Log.d("FILE_NOT_EXISTS", file.getName());
             }
         }
 
@@ -120,22 +137,22 @@ public class OrdersAdapter extends BaseAdapter {
         }
 
         public void setCompletedStatus(int completed) {
-            if (completed == 0) {
+            if (completed == 1) {
                 completedStatus.setText("Completed");
                 completedStatus.setTextColor(Color.parseColor("#4db6ac"));
             }
-            if (completed == 1) {
+            if (completed == 0) {
                 completedStatus.setText("Not completed");
                 completedStatus.setTextColor(Color.parseColor("#FF0000"));
             }
         }
 
         public void setCollectedStatus(int collected) {
-            if (collected == 0) {
+            if (collected == 1) {
                 collectedStatus.setText("Collected");
                 collectedStatus.setTextColor(Color.parseColor("#4db6ac"));
             }
-            if (collected == 1) {
+            if (collected == 0) {
                 collectedStatus.setText("Not Collected");
                 collectedStatus.setTextColor(Color.parseColor("#FF0000"));
             }
