@@ -2,6 +2,10 @@ package com.marvik.apps.jillfashions.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -18,11 +22,16 @@ import android.widget.Toast;
 
 import com.marvik.apps.jillfashions.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 /**
  * Created by victor on 7/29/2015.
  */
 public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
+    private Uri uriFabricAvatar, uriClientAvatar;
     private Button btSaveOrder;
     private CheckBox cbCompleted, cbCollected;
     private ImageView ivClientAvatar, ivFabricAvatar;
@@ -40,7 +49,6 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toast.makeText(getActivity(), "Welcome", Toast.LENGTH_SHORT).show();
     }
 
     @Nullable
@@ -51,14 +59,53 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
         return view;
     }
 
-    @Override
-    public void startActivityForResult(Intent intent, int requestCode) {
-        super.startActivityForResult(intent, requestCode);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        toast("RQ : " + requestCode + " RT: " + resultCode);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == ACTION_PICK_CLIENT_AVATAR) {
+                uriClientAvatar = data.getData();
+                File file = new File(getAvatarFile(getClientAvatarUri()));
+                try {
+                    FileInputStream fis = new FileInputStream(file);
+                    Bitmap bitmap = BitmapFactory.decodeStream(fis);
+                    ivClientAvatar.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (requestCode == ACTION_PICK_FABRIC_AVATAR) {
+                uriFabricAvatar = data.getData();
+                File file = new File(getAvatarFile(getFabricAvatarUri()));
+                try {
+                    FileInputStream fis = new FileInputStream(file);
+                    Bitmap bitmap = BitmapFactory.decodeStream(fis);
+                    ivFabricAvatar.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+    }
+
+    private String getAvatarFile(Uri avatarUri) {
+        String fileUri = null;
+        Cursor cursor = getActivity().getContentResolver().query(avatarUri, null, null, null, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            fileUri = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        }
+        return fileUri;
+    }
+
+    private void toast(String text) {
+        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -96,6 +143,13 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
         super.onDetach();
     }
 
+    private Uri getFabricAvatarUri() {
+        return uriFabricAvatar;
+    }
+
+    private Uri getClientAvatarUri() {
+        return uriClientAvatar;
+    }
 
     private void initViews(View view) {
 
@@ -151,15 +205,15 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
 
     private void pickClientAvatar() {
 
-        getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI), ACTION_PICK_CLIENT_AVATAR);
+        getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), ACTION_PICK_CLIENT_AVATAR);
     }
 
     private void pickFabricAvatar() {
-        getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI), ACTION_PICK_FABRIC_AVATAR);
+        getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), ACTION_PICK_FABRIC_AVATAR);
     }
 
     private void saveClientOrder() {
-
+        toast("Hello");
     }
 
 
