@@ -28,4 +28,10 @@ public class Splash extends Activity {
             }
         }).start();;
     }
+
+
+
+  private void test(){
+
+  }
 }

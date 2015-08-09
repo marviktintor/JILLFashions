@@ -4,17 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/activity_splash_progress"
-        style="?android:attr/progressBarStyleInverse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_splash_progress"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:textColor="#4db6ac"
+       android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/app_name" />
 </RelativeLayout>

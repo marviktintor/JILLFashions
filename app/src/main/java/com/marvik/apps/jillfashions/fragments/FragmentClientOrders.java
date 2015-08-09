@@ -8,13 +8,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.marvik.apps.jillfashions.R;
+import com.marvik.apps.jillfashions.database.transactions.TransactionManager;
+import com.marvik.apps.jillfashions.views.adapters.OrdersAdapter;
 
 /**
  * Created by victor on 7/29/2015.
  */
 public class FragmentClientOrders extends Fragment {
+
+    ListView lvClientOrders;
+    TransactionManager transactionManager;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -23,6 +29,7 @@ public class FragmentClientOrders extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        transactionManager = new TransactionManager(getActivity());
     }
 
     @Nullable
@@ -79,6 +86,12 @@ public class FragmentClientOrders extends Fragment {
     }
 
     private void initViews(View view) {
+        lvClientOrders = (ListView)view.findViewById(R.id.activity_client_orders_listView_orders);
+        lvClientOrders.setAdapter(new OrdersAdapter(getActivity(),R.layout.list_client_orders,getTransactionManager().getOrdersAll()));
+
     }
 
+    public TransactionManager getTransactionManager() {
+        return transactionManager;
+    }
 }

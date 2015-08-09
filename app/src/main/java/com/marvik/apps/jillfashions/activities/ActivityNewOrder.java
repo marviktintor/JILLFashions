@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.marvik.apps.jillfashions.R;
 import com.marvik.apps.jillfashions.database.tables.ClientOrders;
 import com.marvik.apps.jillfashions.database.transactions.TransactionManager;
-import com.marvik.apps.jillfashions.models.ActivityWrapper;
+import com.marvik.apps.jillfashions.models.activities.ActivityWrapper;
 
 import java.io.File;
 import java.io.FileInputStream;

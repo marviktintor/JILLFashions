@@ -5,7 +5,7 @@ import android.widget.FrameLayout;
 
 import com.marvik.apps.jillfashions.R;
 import com.marvik.apps.jillfashions.fragments.FragmentClientOrders;
-import com.marvik.apps.jillfashions.models.ActivityWrapper;
+import com.marvik.apps.jillfashions.models.activities.ActivityWrapper;
 
 /**
  * Created by victor on 8/9/2015.
