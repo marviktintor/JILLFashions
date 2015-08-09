@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.marvik.apps.jillfashions.R;
-import com.marvik.apps.jillfashions.fragments.FragmentNewOrder;
 
 /**
  * Created by victor on 7/29/2015.
@@ -21,7 +20,7 @@ public class Splash extends Activity {
             public void run() {
                 try {
                     Thread.sleep(3000);
-                    startActivity(new Intent(getApplicationContext(),Orders.class));
+                    startActivity(new Intent(getApplicationContext(),ActivityNewOrder.class));
                     finish();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -48,6 +48,8 @@ public class DatabaseEngine extends SQLiteOpenHelper {
                 + ClientOrders.COL_COMPLETED + " integer not null,"
                 + ClientOrders.COL_COMPLETED_DATE + " long not null, "
                 + ClientOrders.COL_COLLECTED + " integer not null,"
-                + ClientOrders.COL_COLLECTED_DATE + " long not null);";
+                + ClientOrders.COL_COLLECTED_DATE + " long not null"
+                 + ClientOrders.COL_FABRIC_AVATAR_URI + " text not null"
+                + ClientOrders.COL_CLIENT_AVATAR_URI + " text not null);";
     }
 }

@@ -23,6 +23,9 @@ public class ClientOrders {
     public static final String COL_COMPLETED_DATE = "completed_date";
     public static final String COL_COLLECTED = "collected";
     public static final String COL_COLLECTED_DATE = "collected_date";
+    public static final String COL_FABRIC_AVATAR_URI = "fabric_avatar";
+    public static final String COL_CLIENT_AVATAR_URI = "client_avatar";
+
 
     public static final Uri CONTENT_URI = Uri.parse("content://com.marvik.apps.jillfashions.database.provider.DataProvider/" +TABLE_NAME);
 }

@@ -1,4 +1,4 @@
-package com.marvik.apps.jillfashions.fragments;
+package com.marvik.apps.jillfashions.activities;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -10,11 +10,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -25,6 +21,7 @@ import android.widget.Toast;
 
 import com.marvik.apps.jillfashions.R;
 import com.marvik.apps.jillfashions.database.transactions.TransactionManager;
+import com.marvik.apps.jillfashions.models.ActivityWrapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,9 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by victor on 7/29/2015.
+ * Created by victor on 8/9/2015.
  */
-public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private Uri uriFabricAvatar, uriClientAvatar;
     private Button btSaveOrder;
@@ -56,29 +53,29 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
     private int dateType;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    protected void onActivityCreated(Bundle savedInstanceState) {
+        setContentView(R.layout.fragment_new_orders);
+        initViews();
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onActivityResume() {
+
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_new_orders, container, false);
-        initViews(view);
-        return view;
+    protected void onActivityPause() {
+
     }
 
+    @Override
+    protected void onActivityDestroy() {
 
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-      Toast.makeText(getActivity(),"Activity Result",Toast.LENGTH_SHORT).show();
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == ACTION_PICK_CLIENT_AVATAR) {
@@ -90,9 +87,10 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
                     ivClientAvatar.setImageBitmap(bitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
+                    toast(e.getMessage());
                 }
             }
-            if (requestCode == ACTION_PICK_FABRIC_AVATAR) {
+            if (requestCode == ACTION_PICK_FABRIC_AVATAR) { toast("2");
                 uriFabricAvatar = data.getData();
                 File file = new File(getAvatarFile(getFabricAvatarUri()));
                 try {
@@ -101,6 +99,7 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
                     ivFabricAvatar.setImageBitmap(bitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
+                    toast(e.getMessage());
                 }
             }
 
@@ -110,7 +109,7 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
 
     private String getAvatarFile(Uri avatarUri) {
         String fileUri = null;
-        Cursor cursor = getActivity().getContentResolver().query(avatarUri, null, null, null, null);
+        Cursor cursor = ActivityNewOrder.this.getContentResolver().query(avatarUri, null, null, null, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             fileUri = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
@@ -119,44 +118,8 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
     }
 
     private void toast(String text) {
-        Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ActivityNewOrder.this, text, Toast.LENGTH_SHORT).show();
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     private Uri getFabricAvatarUri() {
         return uriFabricAvatar;
     }
@@ -165,35 +128,35 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
         return uriClientAvatar;
     }
 
-    private void initViews(View view) {
+    private void initViews() {
 
-        ivClientAvatar = (ImageView) view.findViewById(R.id.new_orders_imageView_client_avatar);
+        ivClientAvatar = (ImageView) findViewById(R.id.new_orders_imageView_client_avatar);
         ivClientAvatar.setOnClickListener(this);
 
-        etFirstname = (EditText) view.findViewById(R.id.new_orders_editText_firstname);
-        etLastname = (EditText) view.findViewById(R.id.new_orders_editText_lastname);
+        etFirstname = (EditText) findViewById(R.id.new_orders_editText_firstname);
+        etLastname = (EditText) findViewById(R.id.new_orders_editText_lastname);
 
-        etEmail = (EditText) view.findViewById(R.id.new_orders_editText_email);
-        etPhonenumber = (EditText) view.findViewById(R.id.new_orders_editText_phonenumber);
+        etEmail = (EditText) findViewById(R.id.new_orders_editText_email);
+        etPhonenumber = (EditText) findViewById(R.id.new_orders_editText_phonenumber);
 
-        ivFabricAvatar = (ImageView) view.findViewById(R.id.new_orders_imageView_fabric_avatar);
+        ivFabricAvatar = (ImageView) findViewById(R.id.new_orders_imageView_fabric_avatar);
         ivFabricAvatar.setOnClickListener(this);
 
 
-        etColor = (EditText) view.findViewById(R.id.new_orders_editText_color);
-        etMaterial = (EditText) view.findViewById(R.id.new_orders_editText_material);
+        etColor = (EditText) findViewById(R.id.new_orders_editText_color);
+        etMaterial = (EditText) findViewById(R.id.new_orders_editText_material);
 
-        etCost = (EditText) view.findViewById(R.id.new_orders_editText_cost);
-        etDiscount = (EditText) view.findViewById(R.id.new_orders_editText_discount);
-        etPaidAmount = (EditText) view.findViewById(R.id.new_orders_editText_paid_amount);
+        etCost = (EditText) findViewById(R.id.new_orders_editText_cost);
+        etDiscount = (EditText) findViewById(R.id.new_orders_editText_discount);
+        etPaidAmount = (EditText) findViewById(R.id.new_orders_editText_paid_amount);
 
-        cbCompleted = (CheckBox) view.findViewById(R.id.new_orders_checkBox_completed);
-        cbCollected = (CheckBox) view.findViewById(R.id.new_orders_checkBox_collected);
+        cbCompleted = (CheckBox) findViewById(R.id.new_orders_checkBox_completed);
+        cbCollected = (CheckBox) findViewById(R.id.new_orders_checkBox_collected);
 
         cbCompleted.setOnCheckedChangeListener(this);
         cbCollected.setOnCheckedChangeListener(this);
 
-        btSaveOrder = (Button) view.findViewById(R.id.new_orders_button_save_order);
+        btSaveOrder = (Button) findViewById(R.id.new_orders_button_save_order);
         btSaveOrder.setOnClickListener(this);
 
     }
@@ -234,11 +197,11 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
 
     private void pickClientAvatar() {
 
-        getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), ACTION_PICK_CLIENT_AVATAR);
+        ActivityNewOrder.this.startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), ACTION_PICK_CLIENT_AVATAR);
     }
 
     private void pickFabricAvatar() {
-        getActivity().startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), ACTION_PICK_FABRIC_AVATAR);
+        ActivityNewOrder.this.startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), ACTION_PICK_FABRIC_AVATAR);
     }
 
     private String getString(EditText editText) {
@@ -258,7 +221,7 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
 
         if (valid_order()) {
 
-            TransactionManager transactionManager = new TransactionManager(getActivity());
+            TransactionManager transactionManager = new TransactionManager(ActivityNewOrder.this);
             int collected = 0;
             int completed = 0;
             if (cbCollected.isChecked()) {
@@ -352,7 +315,7 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
         int year = today.getYear();
         int month = today.getMonth();
         int day = today.getDay();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(ActivityNewOrder.this, this, year, month, day);
         datePickerDialog.show();
     }
 
