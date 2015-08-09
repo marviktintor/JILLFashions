@@ -268,9 +268,9 @@ public class FragmentNewOrder extends Fragment implements CompoundButton.OnCheck
                 completed = 1;
             }
 
-            transactionManager.commitNewOrder(sFirstname, sLastname, sEmail, sPhonenumber, sColor, sMaterial, sCost, sDiscount,
+            /*transactionManager.commitNewOrder(sFirstname, sLastname, sEmail, sPhonenumber, sColor, sMaterial, sCost, sDiscount,
                     sPaidAmount, completed, getCompletedDate(), collected, getCollectedDate(), getClientAvatarUri(), getFabricAvatarUri()
-            );
+           );*/
         }
     }
 

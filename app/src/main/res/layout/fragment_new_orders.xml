@@ -146,25 +146,34 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/new_orders_editText_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/new_orders_editText_color"
                     android:drawablePadding="10dp"
                     android:hint="@string/color"
-                    android:inputType="phone"
+                    android:inputType="text"
                     android:padding="10dp" />
 
                 <EditText
+                    android:id="@+id/new_orders_editText_material"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/new_orders_editText_material"
                     android:drawablePadding="10dp"
                     android:hint="@string/material"
-                    android:inputType="phone"
+                    android:inputType="text"
                     android:padding="10dp" />
             </LinearLayout>
 
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/new_orders_editText_order_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/order_description"
+            android:inputType="textMultiLine" android:layout_margin="10dp"
+            android:lines="3" android:gravity="top"
+            android:padding="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -250,11 +259,11 @@
             android:background="#BEBEBE" />
 
         <CheckBox
+            android:id="@+id/new_orders_checkBox_collected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:padding="10dp"
-            android:id="@+id/new_orders_checkBox_collected"
             android:text="@string/collected" />
 
         <Button

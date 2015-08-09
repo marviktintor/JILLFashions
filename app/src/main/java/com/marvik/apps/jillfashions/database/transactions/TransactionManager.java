@@ -19,7 +19,7 @@ public class TransactionManager {
     }
 
     public void commitNewOrder(String firstname, String lastname, String email,
-                               String phonenumber, String color, String material, String cost,
+                               String phonenumber, String color, String material,String orderDescription, String cost,
                                String discount, String paidAmount,int completed, long completedDate,
                                int collected, long collectedDate, Uri clientAvatarUri, Uri fabricAvatarUri) {
 
@@ -33,6 +33,7 @@ public class TransactionManager {
         values.put(COL_PHONE ,phonenumber);
         values.put(COL_COLOR ,color);
         values.put(COL_MATERIAL,material);
+        values.put(COL_ORDER_DESCRIPTION,orderDescription);
         values.put(COL_COST,cost);
         values.put(COL_DISCOUNT ,discount);
         values.put(COL_PAID,paidAmount);
@@ -41,7 +42,8 @@ public class TransactionManager {
         values.put( COL_COLLECTED,collected);
         values.put(COL_COLLECTED_DATE,collectedDate);
         values.put(COL_FABRIC_AVATAR_URI,fabricAvatarUri.toString());
-        values.put(COL_CLIENT_AVATAR_URI,clientAvatarUri.toString());
+        values.put(COL_CLIENT_AVATAR_URI, clientAvatarUri.toString());
+        values.put(COL_COMMIT_TIME,System.currentTimeMillis());
         getContext().getContentResolver().insert(com.marvik.apps.jillfashions.database.tables.ClientOrders.CONTENT_URI,values);
     }
 

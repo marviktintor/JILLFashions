@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.marvik.apps.jillfashions.R;
-import com.marvik.apps.jillfashions.fragments.FragmentNewOrder;
+import com.marvik.apps.jillfashions.fragments.FragmentClientOrders;
 import com.marvik.apps.jillfashions.models.ActivityWrapper;
 
 /**
@@ -37,6 +37,6 @@ public class Orders extends ActivityWrapper{
 
     private void init(){
         parentContainer = (FrameLayout)findViewById(R.id.activity_orders_frameLayout_parent_container);
-        getSupportFragmentManager().beginTransaction().replace(R.id.activity_orders_frameLayout_parent_container,new FragmentNewOrder()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_orders_frameLayout_parent_container,new FragmentClientOrders()).commit();
     }
 }

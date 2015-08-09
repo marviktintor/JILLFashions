@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.marvik.apps.jillfashions.R;
+import com.marvik.apps.jillfashions.database.tables.ClientOrders;
 import com.marvik.apps.jillfashions.database.transactions.TransactionManager;
 import com.marvik.apps.jillfashions.models.ActivityWrapper;
 
@@ -33,13 +34,13 @@ import java.util.Date;
 /**
  * Created by victor on 8/9/2015.
  */
-public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class ActivityNewOrder extends ActivityWrapper implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private Uri uriFabricAvatar, uriClientAvatar;
     private Button btSaveOrder;
     private CheckBox cbCompleted, cbCollected;
     private ImageView ivClientAvatar, ivFabricAvatar;
-    private EditText etFirstname, etLastname, etEmail, etPhonenumber, etColor, etMaterial, etCost, etDiscount, etPaidAmount;
+    private EditText etFirstname, etLastname, etEmail, etPhonenumber, etColor, etMaterial, etCost, etDiscount, etPaidAmount, etOrderDescription;
 
 
     private static final int ACTION_PICK_FABRIC_AVATAR = 0x0001;
@@ -72,6 +73,7 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
     protected void onActivityDestroy() {
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -90,7 +92,8 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
                     toast(e.getMessage());
                 }
             }
-            if (requestCode == ACTION_PICK_FABRIC_AVATAR) { toast("2");
+            if (requestCode == ACTION_PICK_FABRIC_AVATAR) {
+                toast("2");
                 uriFabricAvatar = data.getData();
                 File file = new File(getAvatarFile(getFabricAvatarUri()));
                 try {
@@ -120,6 +123,7 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
     private void toast(String text) {
         Toast.makeText(ActivityNewOrder.this, text, Toast.LENGTH_SHORT).show();
     }
+
     private Uri getFabricAvatarUri() {
         return uriFabricAvatar;
     }
@@ -145,6 +149,7 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
 
         etColor = (EditText) findViewById(R.id.new_orders_editText_color);
         etMaterial = (EditText) findViewById(R.id.new_orders_editText_material);
+        etOrderDescription = (EditText) findViewById(R.id.new_orders_editText_order_description);
 
         etCost = (EditText) findViewById(R.id.new_orders_editText_cost);
         etDiscount = (EditText) findViewById(R.id.new_orders_editText_discount);
@@ -159,6 +164,16 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
         btSaveOrder = (Button) findViewById(R.id.new_orders_button_save_order);
         btSaveOrder.setOnClickListener(this);
 
+        etFirstname.setText("Victor");
+        etLastname.setText("Mwenda");
+        etEmail.setText("vmwenda.vm@gmail.com");
+        etPhonenumber.setText("0718034449");
+        etColor.setText("Gray");
+        etMaterial.setText("Velvet");
+        etOrderDescription.setText("Wedding Dress");
+        etCost.setText("600");
+        etDiscount.setText("100");
+        etPaidAmount.setText("500");
     }
 
     @Override
@@ -215,6 +230,7 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
                 sPhonenumber = getString(etPhonenumber),
                 sColor = getString(etColor),
                 sMaterial = getString(etMaterial),
+                sOrderDescription = getString(etOrderDescription),
                 sCost = getString(etCost),
                 sDiscount = getString(etDiscount),
                 sPaidAmount = getString(etPaidAmount);
@@ -231,9 +247,12 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
                 completed = 1;
             }
 
-            transactionManager.commitNewOrder(sFirstname, sLastname, sEmail, sPhonenumber, sColor, sMaterial, sCost, sDiscount,
+            transactionManager.commitNewOrder(sFirstname, sLastname, sEmail, sPhonenumber, sColor, sMaterial, sCost, sOrderDescription, sDiscount,
                     sPaidAmount, completed, getCompletedDate(), collected, getCollectedDate(), getClientAvatarUri(), getFabricAvatarUri()
             );
+
+            int rows = getContentResolver().query(ClientOrders.CONTENT_URI, null, null, null, null).getCount();
+            toast("Rows " + rows);
         }
     }
 
@@ -245,6 +264,7 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
                 sPhonenumber = getString(etPhonenumber),
                 sColor = getString(etColor),
                 sMaterial = getString(etMaterial),
+                sOrderDescription = getString(etOrderDescription),
                 sCost = getString(etCost),
                 sDiscount = getString(etDiscount),
                 sPaidAmount = getString(etPaidAmount);
@@ -272,6 +292,10 @@ public class ActivityNewOrder extends ActivityWrapper  implements CompoundButton
         if (sMaterial.equals("")) {
             orderValid = false;
             etMaterial.setHintTextColor(Color.RED);
+        }
+        if (sOrderDescription.equals("")) {
+            orderValid = false;
+            etOrderDescription.setHintTextColor(Color.RED);
         }
         if (sCost.equals("")) {
             orderValid = false;

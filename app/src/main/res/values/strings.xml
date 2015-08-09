@@ -18,4 +18,5 @@
     <string name="collected">Collected</string>
     <string name="save_client_order">Save Client Order</string>
     <string name="completion_info">Completion Info</string>
+    <string name="order_description">Order Description</string>
 </resources>
